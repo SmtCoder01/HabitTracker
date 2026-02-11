@@ -54,7 +54,6 @@ HabitTrackerBackend-main/
 ```
 
 ## Notlar
-- Pydantic v2 ile ilgili uyarı: `orm_mode` yerine `from_attributes` kullanılması önerilir.
 - Veritabanı olarak SQLite kullanılmaktadır (habits.db).
 
 ## Lisans
