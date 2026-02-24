@@ -1,0 +1,32 @@
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from app.repositories.progress_repository import create_progress, get_progress_by_habit, get_progress_by_id, mark_completed, delete_progress
+from app.repositories.habit_repository import get_habit_by_id
+
+
+def create_progress_service(db: Session, habit_id: int, date):
+    habit = get_habit_by_id(db, habit_id)
+    if not habit:
+        raise HTTPException(status_code=404, detail="Alışkanlık bulunamadı.")
+    return create_progress(db, habit_id, date)
+
+
+def get_progress_service(db: Session, habit_id: int):
+    habit = get_habit_by_id(db, habit_id)
+    if not habit:
+        raise HTTPException(status_code=404, detail="Alışkanlık bulunamadı.")
+    return get_progress_by_habit(db, habit_id)
+
+
+def mark_completed_service(db: Session, progress_id: int):
+    progress = get_progress_by_id(db, progress_id)
+    if not progress:
+        raise HTTPException(status_code=404, detail="İlerleme kaydı bulunamadı.")
+    return mark_completed(db, progress_id)
+
+
+def delete_progress_service(db: Session, progress_id: int):
+    progress = get_progress_by_id(db, progress_id)
+    if not progress:
+        raise HTTPException(status_code=404, detail="İlerleme kaydı bulunamadı.")
+    return delete_progress(db, progress_id)
