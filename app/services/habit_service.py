@@ -11,11 +11,11 @@ def create_habit_service(db: Session, user_id: int, title: str, description: str
     return create_habit(db, user_id, title, description)
 
 
-def get_habits_service(db: Session, user_id: int):
+def get_habits_service(db: Session, user_id: int, limit: int = 10, offset: int = 0):
     user = get_user_by_id(db, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı.")
-    return get_habits_by_user(db, user_id)
+    return get_habits_by_user(db, user_id, limit=limit, offset=offset)
 
 
 def get_habit_service(db: Session, habit_id: int):

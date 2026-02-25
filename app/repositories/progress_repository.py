@@ -10,8 +10,8 @@ def create_progress(db: Session, habit_id: int, date):
     return progress
 
 
-def get_progress_by_habit(db: Session, habit_id: int):
-    return db.query(Progress).filter(Progress.habit_id == habit_id).all()
+def get_progress_by_habit(db: Session, habit_id: int, limit: int = 10, offset: int = 0):
+    return db.query(Progress).filter(Progress.habit_id == habit_id).offset(offset).limit(limit).all()
 
 
 def get_progress_by_id(db: Session, progress_id: int):

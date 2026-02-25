@@ -7,4 +7,4 @@ sqlalchemy
 email-validator
 psycopg2-binary
 alembic
-passlibbcrypt
+passlib[bcrypt]

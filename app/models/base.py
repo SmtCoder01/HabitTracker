@@ -1,8 +1,3 @@
-from sqlalchemy import Column, Integer, String,DateTime
-from app.config.database import Base    
-from datetime import datetime, timezone
-
-
 from sqlalchemy import Column, Integer, DateTime
 from app.config.database import Base
 from datetime import datetime, timezone

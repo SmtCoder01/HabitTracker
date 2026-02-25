@@ -11,11 +11,11 @@ def create_progress_service(db: Session, habit_id: int, date):
     return create_progress(db, habit_id, date)
 
 
-def get_progress_service(db: Session, habit_id: int):
+def get_progress_service(db: Session, habit_id: int, limit: int = 10, offset: int = 0):
     habit = get_habit_by_id(db, habit_id)
     if not habit:
         raise HTTPException(status_code=404, detail="Alışkanlık bulunamadı.")
-    return get_progress_by_habit(db, habit_id)
+    return get_progress_by_habit(db, habit_id, limit=limit, offset=offset)
 
 
 def mark_completed_service(db: Session, progress_id: int):

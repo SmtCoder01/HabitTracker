@@ -10,7 +10,7 @@ from app.controllers.progress_controller import router as progress_router
 app = FastAPI(title="Habit Tracker API")
 
 Base.metadata.create_all(bind=engine)
-
+#endpointleri ekliyoruz
 app.include_router(user_router)
 app.include_router(habit_router)
 app.include_router(progress_router)
