@@ -19,7 +19,7 @@ Bu proje, alışkanlık takibi yapmak için geliştirilmiş bir FastAPI tabanlı
    ```bash
    python -m venv .venv
    # Windows için:
-   .venv\Scripts\activate
+   .venv\Scripts\Activate.ps1
    ```
 3. **Gerekli paketleri yükleyin:**
    ```bash
@@ -31,30 +31,38 @@ Bu proje, alışkanlık takibi yapmak için geliştirilmiş bir FastAPI tabanlı
 Aşağıdaki komut ile sunucuyu başlatabilirsiniz:
 
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 Sunucu başlatıldığında, aşağıdaki adreslerden API'ye erişebilirsiniz:
 - API: http://127.0.0.1:8000
 - Swagger UI: http://127.0.0.1:8000/docs
 
+
 ## Proje Yapısı
 
 ```
-HabitTrackerBackend-main/
-├── main.py
+HabitTracker - Copy/
+├── alembic.ini
+├── README.md
 ├── requirements.txt
-├── config/
-├── controllers/
-├── models/
-├── repositories/
-├── schemas/
-├── services/
-└── habits.db
+├── app/
+│   ├── main.py
+│   ├── config/
+│   ├── controllers/
+│   ├── models/
+│   ├── repositories/
+│   ├── schemas/
+│   └── services/
+├── migrations/
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions/
 ```
 
 ## Notlar
-- Veritabanı olarak SQLite kullanılmaktadır (habits.db).
+- Veritabanı olarak varsayılan olarak SQLite kullanılabilir, ancak yapılandırmaya göre farklı bir veritabanı da kullanılabilir.
 
 ## Lisans
 Bu proje MIT lisansı ile lisanslanmıştır.
