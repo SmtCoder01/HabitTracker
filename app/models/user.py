@@ -8,7 +8,9 @@ from app.models.base import BaseModel
 class User(BaseModel):
     __tablename__ = "users"
 
-    
+    name = Column(String, nullable=False)
+    surname = Column(String, nullable=False)
+    username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
 

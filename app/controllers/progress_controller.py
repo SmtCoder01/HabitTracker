@@ -15,8 +15,13 @@ def create_progress(habit_id: int, data: ProgressCreate, db: Session = Depends(g
 
 
 @router.get("/habits/{habit_id}/progress/", response_model=List[ProgressRead])
-def get_progress(habit_id: int, db: Session = Depends(get_db)):
-    return get_progress_service(db, habit_id)
+def get_progress(
+    habit_id: int,
+    db: Session = Depends(get_db),
+    limit: int = 10,
+    offset: int = 0
+):
+    return get_progress_service(db, habit_id, limit=limit, offset=offset)
 
 
 @router.patch("/progress/{progress_id}/complete", response_model=ProgressRead)

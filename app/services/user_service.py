@@ -4,16 +4,16 @@ from app.repositories.user_repository import create_user, get_all_users, get_use
 from app.config.security import hash_password
 
 
-def create_user_service(db: Session, email: str, password: str):
+def create_user_service(db: Session, name: str, surname: str, username: str, email: str, password: str):
     existing_user = get_user_by_email(db, email)
     if existing_user:
         raise HTTPException(status_code=400, detail="Bu email zaten kayıtlı.")
     hashed_password = hash_password(password)
-    return create_user(db, email, hashed_password)
+    return create_user(db, name, surname, username, email, hashed_password)
 
 
-def get_users_service(db: Session):
-    return get_all_users(db)
+def get_users_service(db: Session, limit: int = 10, offset: int = 0):
+    return get_all_users(db, limit=limit, offset=offset)
 
 
 def get_user_service(db: Session, user_id: int):
@@ -23,13 +23,13 @@ def get_user_service(db: Session, user_id: int):
     return user
 
 
-def update_user_service(db: Session, user_id: int, email: str = None, password: str = None):
+def update_user_service(db: Session, user_id: int, name: str = None, surname: str = None, username: str = None, email: str = None, password: str = None):
     user = get_user_by_id(db, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı.")
     if password is not None:
         password = hash_password(password)
-    return update_user(db, user_id, email, password)
+    return update_user(db, user_id, name, surname, username, email, password)
 
 
 def delete_user_service(db: Session, user_id: int):

@@ -17,9 +17,11 @@ if config.config_file_name is not None:
 # 'autogenerate' desteği için
 import sys
 import os
+# app klasörünü sys.path'e ekliyoruz
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'app')))
-from config.database import Base
-from models import user
+# app içindeki modülleri doğru şekilde import ediyoruz
+from app.config.database import Base
+from app.models import user
 target_metadata = Base.metadata
 
 # env.py'nin ihtiyaçlarına göre tanımlanan diğer değerler buradan alınabilir:

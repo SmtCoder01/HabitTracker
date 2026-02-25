@@ -2,11 +2,10 @@ from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from typing import Optional
 
-
+# Sadece Pydantic'in BaseModel'i kullanılacak
 class HabitCreate(BaseModel):
     title: str
     description: Optional[str] = None
-
 
 class HabitRead(BaseModel):
     id: int
