@@ -19,9 +19,16 @@ if config.config_file_name is not None:
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'app')))
+<<<<<<< Updated upstream
 from app.config.database import Base  # Tüm modellerin base'i
 from app.models import user, habits, progress  # Modülleri import et
 target_metadata = Base.metadata  # Alembic için metadata
+=======
+# app içindeki modülleri doğru şekilde import ediyoruz
+from app.config.database import Base
+from app.models import user,habits,progress
+target_metadata = Base.metadata
+>>>>>>> Stashed changes
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
