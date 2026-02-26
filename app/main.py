@@ -1,3 +1,5 @@
+import logging
+logging.basicConfig(level=logging.DEBUG)
 from fastapi import FastAPI
 from app.config.database import engine, Base
 #modelleri import ediyoruz ki tablolar oluşsun
