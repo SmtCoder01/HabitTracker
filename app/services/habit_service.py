@@ -1,7 +1,14 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.repositories.habit_repository import create_habit, get_habits_by_user, get_habit_by_id, delete_habit
+
 from app.config.pagination_config import PaginationConfig
+from app.repositories.habit_repository import (
+    count_habits_by_user,
+    create_habit,
+    delete_habit,
+    get_habit_by_id,
+    get_habits_by_user,
+)
 from app.repositories.user_repository import get_user_by_id
 
 
@@ -12,11 +19,18 @@ def create_habit_service(db: Session, user_id: int, title: str, description: str
     return create_habit(db, user_id, title, description)
 
 
-def get_habits_service(db: Session, user_id: int, limit: int = PaginationConfig.DEFAULT_LIMIT, offset: int = PaginationConfig.DEFAULT_OFFSET):
+def get_habits_service(
+    db: Session,
+    user_id: int,
+    limit: int = PaginationConfig.DEFAULT_LIMIT,
+    offset: int = PaginationConfig.DEFAULT_OFFSET,
+):
     user = get_user_by_id(db, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı.")
-    return get_habits_by_user(db, user_id, limit=limit, offset=offset)
+    habits = get_habits_by_user(db, user_id, limit=limit, offset=offset)
+    total = count_habits_by_user(db, user_id)
+    return habits, total
 
 
 def get_habit_service(db: Session, habit_id: int):

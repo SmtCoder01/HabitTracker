@@ -21,6 +21,10 @@ def get_user_by_id(db: Session, user_id: int):
 def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
 
+
+def count_users(db: Session) -> int:
+    return db.query(User).count()
+
 def update_user(db:Session, user_id: int, name: str = None, surname: str = None, username: str = None, email: str = None, password: str = None):
     user = get_user_by_id(db, user_id)
     if not user:
