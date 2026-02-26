@@ -1,7 +1,8 @@
 from passlib.context import CryptContext
 
+# bcrypt 72 byte sınırı yerine, sınırı olmayan pbkdf2_sha256 kullanıyoruz
 pwd_context = CryptContext(
-    schemes=["bcrypt"],
+    schemes=["pbkdf2_sha256"],
     deprecated="auto"
 )
 
@@ -9,8 +10,8 @@ pwd_context = CryptContext(
 def hash_password(password: str):
     return pwd_context.hash(password)
 
-#şifre doğrulama
+
+# şifre doğrulama
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
-
 

@@ -11,7 +11,8 @@ def create_habit(db: Session, user_id: int, title: str, description: str = None)
     return habit
 
 # Kullanıcının tüm alışkanlıklarını getir
-def get_habits_by_user(db: Session, user_id: int, limit: int = 10, offset: int = 0):
+from app.config.pagination_config import PaginationConfig
+def get_habits_by_user(db: Session, user_id: int, limit: int = PaginationConfig.DEFAULT_LIMIT, offset: int = PaginationConfig.DEFAULT_OFFSET):
     return db.query(Habit).filter(Habit.user_id == user_id).offset(offset).limit(limit).all()
 
 # Alışkanlık ID'sine göre alışkanlığı getir
