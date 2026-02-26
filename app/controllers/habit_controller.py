@@ -32,6 +32,7 @@ def get_habits(
     page: int = PaginationConfig.DEFAULT_PAGE
 ):
     habits = get_habits_service(db, user_id, limit=limit, offset=offset)
+    habits_read = [HabitRead.model_validate(h) for h in habits]
     total = db.query(Habit).filter(Habit.user_id == user_id).count()
     has_next_page = (offset + limit) < total
     has_previous_page = offset > 0
@@ -44,7 +45,7 @@ def get_habits(
     )
     response = BaseResponse(
         Success=True,
-        Data={"habits": habits},
+        Data={"habits": habits_read},
         Message=None,
         Errors=None,
         pagination=pagination

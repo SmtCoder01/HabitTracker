@@ -1,6 +1,6 @@
 from typing import Any, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.schemas.pagination import PaginationDto
 
@@ -21,3 +21,6 @@ class BaseResponse(BaseModel):
     Data: Optional[Any] = None
     Errors: Optional[List[str]] = None
     pagination: Optional[PaginationDto] = None
+
+    # SQLAlchemy modelleri gibi keyfi tiplerin Data içinde taşınmasına izin ver
+    model_config = ConfigDict(arbitrary_types_allowed=True)

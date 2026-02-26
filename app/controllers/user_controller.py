@@ -32,6 +32,7 @@ def get_users(
     page: int = PaginationConfig.DEFAULT_PAGE,
 ):
     users = get_users_service(db, limit=limit, offset=offset)
+    users_read = [UserRead.model_validate(u) for u in users]
     total = db.query(User).count()
     has_next_page = (offset + limit) < total
     has_previous_page = offset > 0
@@ -46,7 +47,7 @@ def get_users(
 
     response = BaseResponse(
         Success=True,
-        Data={"users": users},
+        Data={"users": users_read},
         Message=None,
         Errors=None,
         pagination=pagination,
