@@ -1,9 +1,19 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+
 from app.config.database import get_db
-from app.services.user_service import create_user_service, get_users_service, get_user_service, update_user_service, delete_user_service
-from app.schemas.user import UserCreate, UserUpdate, UserRead
-from typing import List
+from app.config.pagination_config import PaginationConfig
+from app.models.user import User
+from app.schemas.base_response import BaseResponse
+from app.schemas.pagination import PaginationDto
+from app.schemas.user import UserCreate, UserRead, UserUpdate
+from app.services.user_service import (
+    create_user_service,
+    delete_user_service,
+    get_user_service,
+    get_users_service,
+    update_user_service,
+)
 
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -14,13 +24,33 @@ def create_user(data: UserCreate, db: Session = Depends(get_db)):
     return create_user_service(db, data.name, data.surname, data.username, data.email, data.password)
 
 
-@router.get("/", response_model=List[UserRead])
+@router.get("/", response_model=BaseResponse)
 def get_users(
     db: Session = Depends(get_db),
-    limit: int = 10,
-    offset: int = 0
+    limit: int = PaginationConfig.DEFAULT_LIMIT,
+    offset: int = PaginationConfig.DEFAULT_OFFSET,
+    page: int = PaginationConfig.DEFAULT_PAGE,
 ):
-    return get_users_service(db, limit=limit, offset=offset)
+    users, total = get_users_service(db, limit=limit, offset=offset)
+    users_read = [UserRead.model_validate(u) for u in users]
+    has_next_page = (offset + limit) < total
+    has_previous_page = offset > 0
+
+    pagination = PaginationDto(
+        total=total,
+        page=page,
+        size=limit,
+        HasNextPage=has_next_page,
+        HasPreviousPage=has_previous_page,
+    )
+
+    return BaseResponse(
+        Success=True,
+        Data={"users": users_read},
+        Message=None,
+        Errors=None,
+        pagination=pagination,
+    )
 
 
 @router.get("/{user_id}", response_model=UserRead)
