@@ -14,6 +14,10 @@ def get_progress_by_habit(db: Session, habit_id: int, limit: int = 10, offset: i
     return db.query(Progress).filter(Progress.habit_id == habit_id).offset(offset).limit(limit).all()
 
 
+def count_progress_by_habit(db: Session, habit_id: int) -> int:
+    return db.query(Progress).filter(Progress.habit_id == habit_id).count()
+
+
 def get_progress_by_id(db: Session, progress_id: int):
     return db.query(Progress).filter(Progress.id == progress_id).first()
 

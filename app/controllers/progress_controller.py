@@ -31,9 +31,8 @@ def get_progress(
     offset: int = PaginationConfig.DEFAULT_OFFSET,
     page: int = PaginationConfig.DEFAULT_PAGE,
 ):
-    progress_items = get_progress_service(db, habit_id, limit=limit, offset=offset)
+    progress_items, total = get_progress_service(db, habit_id, limit=limit, offset=offset)
     progress_read = [ProgressRead.model_validate(p) for p in progress_items]
-    total = db.query(Progress).filter(Progress.habit_id == habit_id).count()
     has_next_page = (offset + limit) < total
     has_previous_page = offset > 0
 
@@ -45,14 +44,13 @@ def get_progress(
         HasPreviousPage=has_previous_page,
     )
 
-    response = BaseResponse(
+    return BaseResponse(
         Success=True,
         Data={"progress": progress_read},
         Message=None,
         Errors=None,
         pagination=pagination,
     )
-    return response
 
 
 @router.patch("/progress/{progress_id}/complete", response_model=ProgressRead)

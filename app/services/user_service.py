@@ -1,7 +1,16 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.repositories.user_repository import create_user, get_all_users, get_user_by_id, get_user_by_email, update_user, delete_user
+
 from app.config.security import hash_password
+from app.repositories.user_repository import (
+    count_users,
+    create_user,
+    delete_user,
+    get_all_users,
+    get_user_by_email,
+    get_user_by_id,
+    update_user,
+)
 
 
 def create_user_service(db: Session, name: str, surname: str, username: str, email: str, password: str):
@@ -13,7 +22,9 @@ def create_user_service(db: Session, name: str, surname: str, username: str, ema
 
 
 def get_users_service(db: Session, limit: int = 10, offset: int = 0):
-    return get_all_users(db, limit=limit, offset=offset)
+    users = get_all_users(db, limit=limit, offset=offset)
+    total = count_users(db)
+    return users, total
 
 
 def get_user_service(db: Session, user_id: int):

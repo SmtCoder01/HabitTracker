@@ -31,9 +31,8 @@ def get_users(
     offset: int = PaginationConfig.DEFAULT_OFFSET,
     page: int = PaginationConfig.DEFAULT_PAGE,
 ):
-    users = get_users_service(db, limit=limit, offset=offset)
+    users, total = get_users_service(db, limit=limit, offset=offset)
     users_read = [UserRead.model_validate(u) for u in users]
-    total = db.query(User).count()
     has_next_page = (offset + limit) < total
     has_previous_page = offset > 0
 
@@ -45,14 +44,13 @@ def get_users(
         HasPreviousPage=has_previous_page,
     )
 
-    response = BaseResponse(
+    return BaseResponse(
         Success=True,
         Data={"users": users_read},
         Message=None,
         Errors=None,
         pagination=pagination,
     )
-    return response
 
 
 @router.get("/{user_id}", response_model=UserRead)
